@@ -35,15 +35,15 @@ RUN choco install \
     --timeout 216000 \
     && rmdir /S /Q C:\chococache
 
-RUN choco install \
-    visualstudio2017-workload-azure \
+#RUN choco install \
+    #visualstudio2017-workload-azure \
     #visualstudio2017-workload-netcoretools \
     #visualstudio2017-workload-netweb \
-    --confirm \
-    --limit-output \
-    --timeout 21600 \
-    --package-parameters "--includeOptional" \
-    && rmdir /S /Q C:\chococache
+    #--confirm \
+    #--limit-output \
+    #--timeout 21600 \
+    #--package-parameters "--includeOptional" \
+    #&& rmdir /S /Q C:\chococache
 
 # common node tools
 RUN npm install gulp -g && npm install grunt -g && npm install -g less && npm install phantomjs-prebuilt -g
