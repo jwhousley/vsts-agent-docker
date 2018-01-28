@@ -49,7 +49,7 @@ $creds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes
 $encodedAuthValue = "Basic $creds"
 $acceptHeaderValue = "application/json;api-version=3.0-preview"
 $headers = @{Authorization = $encodedAuthValue;Accept = $acceptHeaderValue }
-$vstsUrl = "$TFS_URL/_apis/distributedtask/packages/agent?platform=win7-x64&`$top=1"
+$vstsUrl = "$env:TFS_URL/_apis/distributedtask/packages/agent?platform=win7-x64&`$top=1"
 #$vstsUrl = "https://$env:VSTS_ACCOUNT.visualstudio.com/_apis/distributedtask/packages/agent?platform=win7-x64&`$top=1"
 $response = Invoke-WebRequest -UseBasicParsing -Headers $headers -Uri $vstsUrl -UserAgent $useragent
 
@@ -74,7 +74,7 @@ Set-Location -Path "C:\BuildAgent"
 
 & .\bin\Agent.Listener.exe configure --unattended `
     --agent "$env:VSTS_AGENT" `
-    --url "$TFS_URL" `
+    --url "$env:TFS_URL" `
     --auth PAT `
     --token "$env:VSTS_TOKEN" `
     --pool "$env:VSTS_POOL" `
