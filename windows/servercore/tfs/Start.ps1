@@ -44,26 +44,6 @@ if($env:VSTS_POOL -eq $null)
     $env:VSTS_POOL = "Default"
 }
 
-$useragent = 'vsts-windowscontainer'
-$creds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($("user:$env:VSTS_TOKEN")))
-$encodedAuthValue = "Basic $creds"
-$acceptHeaderValue = "application/json;api-version=3.0-preview"
-$headers = @{Authorization = $encodedAuthValue;Accept = $acceptHeaderValue }
-$vstsUrl = "$env:TFS_URL/_apis/distributedtask/packages/agent?platform=win7-x64&`$top=1"
-#$vstsUrl = "https://$env:VSTS_ACCOUNT.visualstudio.com/_apis/distributedtask/packages/agent?platform=win7-x64&`$top=1"
-$response = Invoke-WebRequest -UseBasicParsing -Headers $headers -Uri $vstsUrl -UserAgent $useragent
-
-$response = ConvertFrom-Json $response.Content
-
-Write-Host "Download agent to C:\BuildAgent\agent.zip"
-Invoke-WebRequest -Uri $response.value[0].downloadUrl -OutFile C:\BuildAgent\agent.zip
-
-Write-Host "Extract agent.zip"
-Expand-Archive -Path C:\BuildAgent\agent.zip -DestinationPath C:\BuildAgent
-
-Write-Host "Deleting agent.zip"
-Remove-Item -Path C:\BuildAgent\agent.zip
-
 $env:VSO_AGENT_IGNORE="VSTS_AGENT_URL,VSO_AGENT_IGNORE,VSTS_AGENT,VSTS_ACCOUNT,VSTS_TOKEN,VSTS_POOL,VSTS_WORK"
 if ($env:VSTS_AGENT_IGNORE -ne $null)
 {
